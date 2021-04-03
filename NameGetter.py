@@ -11,7 +11,7 @@ def GetAllNamesJustCopy(fileName):
         for line in readfile:
             str1 += line
     except FileNotFoundError:
-        print("File name was wrong or doesn't exist")
+        sys.exit("File name was wrong or doesn't exist")
 
     stringSplit = str1.split()
     if not stringSplit:
