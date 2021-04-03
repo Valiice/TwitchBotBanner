@@ -3,11 +3,12 @@ import time
 import os
 
 
-def BanBots():
-    print("Now to ban the bots!!")
-    file_name = input("\nEnter the name of the file without the .txt:")
-    directory = os.getcwd() + "\EndResults"
-    directory = directory + f"\{file_name}.txt"
+def BanBots(directory_name):
+    print("\n\nNow to ban the bots!!")
+    # file_name = input("\nEnter the name of the file without the .txt:")
+    # directory = os.getcwd() + "\EndResults"
+    # directory = directory + f"\{file_name}.txt"
+    directory = directory_name
 
     t = int(input("\nGive the amount of time I should wait: "))
 
@@ -18,7 +19,7 @@ def BanBots():
             time.sleep(1)
         print("SPAM!")
 
-    countdown(t)  # The Amount you want o count down
+    countdown(t)  # The Amount you want to count down
     # print(directory)
     try:
         f = open(directory, 'r')  # The file where it gets the data from

@@ -5,7 +5,6 @@ import BanBots
 
 
 def GetAllNamesJustCopy(fileName):
-    all_names = []
     str1 = ""
     try:
         readfile = open(fileName, "r")
@@ -14,50 +13,65 @@ def GetAllNamesJustCopy(fileName):
     except FileNotFoundError:
         print("File name was wrong or doesn't exist")
 
-    timestamps = []
+    stringSplit = str1.split()
+    if not stringSplit:
+        sys.exit('There are no words in the given file')
+
+    # Get's all the names for bots who are following or talking.
+    follow_or_talking = FollowOrTalking(stringSplit)
+
+    # Checks all the names for duplicates and if there is one then remove it
+    no_double_names = RemovingDuplicateNames(follow_or_talking)
+
+    # Starts banning all the bots
+    BanBots.BanBots(PrintingToTxt(no_double_names))
+
+
+def FollowOrTalking(stringSplit):
+    all_names = []
     is_true = True
-    while is_true:
-        print("\nSay stop if you want to stop the input for timestamps:")
-        x = input(f"Give the timestamp of the names you want to get: ")
-        if x == "stop" or x == "Stop":
-            is_true = False
-        else:
-            timestamps.append(x)
-    test = str1.split()
-    for i in range(len(test)):
-        for j in range(len(timestamps)):
-            if test[i] == timestamps[j]:
-                all_names.append(test[i + 1])
-                # all_names.append(test[i + 1][:-1])  # Appends with i+ and then removes last letter
-                # TODO MAKE A SEARCH ON SPAMMER OR FOLLOWBOT
-        # if test[i] == "0:10" or test[i] == "0:09":
+    print("following = 1")
+    print("timestamp = 2")
+    wordOrTimestamp = input()
+    if wordOrTimestamp == '2':
+        # Gives per timestamp
+        timestamps = []
+        while is_true:
+            print("\nSay stop if you want to stop the input for timestamps:")
+            x = input(f"Give the timestamp of the names you want to get: ")
+            if x == "stop" or x == "Stop":
+                is_true = False
+            else:
+                timestamps.append(x)
+        for i in range(len(stringSplit)):
+            for j in range(len(timestamps)):
+                if stringSplit[i] == timestamps[j]:
+                    all_names.append(stringSplit[i + 1][:-1])
+        print("Got all the spamming bots\n")
+        return all_names
+    else:
+        # Gives for following
+        for i in range(len(stringSplit)):
+            if stringSplit[i] == "following":
+                all_names.append(stringSplit[i + 1])
+        print("Got all the following bots\n")
+        return all_names
 
+
+def RemovingDuplicateNames(all_names):
     no_double_names = []
-
+    print("Removing duplicates...")
     for name in all_names:
-        # print(name)
-        if not no_double_names:
-            no_double_names.append(name)
         is_the_same = False
+        # If the name has a double add it here
         for double in no_double_names:
-            if double == name:  # Checker if the name isn't the same
-                # print("FOUND NAME THAT WAS THE SAME")
+            if double == name:
                 is_the_same = True
-
-        if not is_the_same:  # Name gets added here
-            # print("Name Added")
+        # If the name is not in there already add it here
+        if not is_the_same:
             no_double_names.append(name)
-    for name in no_double_names:
-        print(name)
-
-    PrintingToTxt(no_double_names)
-
-
-def DirectoryGetter():
-    file_name = input("Enter the name of the file without the .txt:")
-    directory = os.getcwd() + "\InputNames"
-    directory = directory + f"\{file_name}.txt"
-    return directory
+            print(name)
+    return no_double_names
 
 
 def PrintingToTxt(printedToTxt):
@@ -72,7 +86,14 @@ def PrintingToTxt(printedToTxt):
         for name in printedToTxt:
             print(name)
         sys.stdout = original_stdout
+    return directory
+
+
+def DirectoryGetter():
+    file_name = input("Enter the name of the file without the .txt:")
+    directory = os.getcwd() + "\InputNames"
+    directory = directory + f"\{file_name}.txt"
+    return directory
 
 
 print(GetAllNamesJustCopy(DirectoryGetter()))
-BanBots.BanBots()
