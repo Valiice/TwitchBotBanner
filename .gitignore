@@ -129,10 +129,10 @@ dmypy.json
 .pyre/
 
 # Visual Studio Code
-.vscode
+.vscode/
 
 # Pycharm
-.idea
+.idea/
 # Default ignored files
 /shelf/
 /workspace.xml
